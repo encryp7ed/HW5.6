@@ -2,6 +2,7 @@ import requests
 import json
 from config import keys
 
+# Класс исключений для отлова ошибок
 class ConvertionException(Exception):
     pass
 
@@ -26,7 +27,7 @@ class CrypyoConverter:
         except ValueError:
             raise ConvertionException(f'Не удалось обработать количество "{amount}".')
 
-        # получение цены валюты с сайта
+        # Получение цены валюты с сайта
         r = requests.get(f'https://min-api.cryptocompare.com/data/price?fsym={quote_ticker}&tsyms={base_ticker}')
         # Печать цены запрашиваемой валюты и название валюты, в которой эта цена представлена
         total_base = json.loads(r.content)[keys[base]]

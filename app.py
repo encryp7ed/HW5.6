@@ -5,16 +5,16 @@ from utils import CrypyoConverter, ConvertionException
 
 bot = telebot.TeleBot(TOKEN)
 
-
+# Печать инструкции по работе с ботом по командам /start и /help
 @bot.message_handler(commands=['start', 'help'])
 def echo_test(message: telebot.types.Message):
-    # Инструкция по работе с ботом
     text = 'Чтобы начать работу введите команду боту в следующем формате:\n<имя валюты> ' \
 '<в какую валюту перевести> ' \
 '<количество переводимой валюты>\nУвидеть список всех доступных валют: /values'
     bot.reply_to(message, text)
 
 
+# Печать доступных валют по команде /values
 @bot.message_handler(commands=['values'])
 def values(message: telebot.types.Message):
     text = 'Доступные валюты: '
@@ -26,6 +26,7 @@ def values(message: telebot.types.Message):
 @bot.message_handler(content_types=['text', ])
 def convert(message: telebot.types.Message):
     try:
+        # Получение данных из сообщения пользователя
         values = message.text.split(' ')
 
         # Проверка правильности заполнения запроса пользователем
@@ -45,6 +46,7 @@ def convert(message: telebot.types.Message):
     # Создаем исключение, если произошла ошибка на серверной части
     except Exception as e:
         bot.reply_to(message, f'Не удалось обработать команду\n{e}')
+    # Печать сообщения с успешной конвертацией
     else:
         text = f'Цена {amount} {quote} в {base} - {total_base}'
         bot.send_message(message.chat.id, text)
